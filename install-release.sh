@@ -229,6 +229,12 @@ identify_the_operating_system_and_architecture() {
 judgment_parameters() {
   local local_install='0'
   local temp_version='0'
+
+  # 检查 http_proxy 环境变量并将其设置为 PROXY 变量的默认值
+  if [[ -z "$PROXY" ]]; then
+    export PROXY="${http_proxy:-}"
+  fi
+
   while [[ "$#" -gt '0' ]]; do
     case "$1" in
       'install')
@@ -284,7 +290,7 @@ judgment_parameters() {
           echo "error: Please specify the proxy server address."
           return 1
         fi
-        PROXY="$2"
+        PROXY="${2}"
         shift
         ;;
       '-u' | '--install-user')
